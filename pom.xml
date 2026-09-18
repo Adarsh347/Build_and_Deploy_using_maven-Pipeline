@@ -13,7 +13,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/YOUR_USERNAME/YOUR_REPO</url>
+            <url>https://maven.pkg.github.com/Adarsh347/Build_and_Deploy_using_maven-Pipeline</url>
         </repository>
     </distributionManagement>
 
