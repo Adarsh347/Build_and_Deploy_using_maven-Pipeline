@@ -5,7 +5,7 @@ pipeline {
         GITHUB_CREDS = credentials('github-packages-cred-jenkins-pipeline')
         JAVA_HOME    = tool name: 'jdk11'
         MAVEN_HOME   = tool name: 'maven3'
-        PATH         = "${JAVA_HOME}/bin:${PATH}"
+        PATH         = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${PATH}"
     }
 
     stages {
@@ -18,14 +18,19 @@ pipeline {
 
         stage('Build & Deploy') {
             steps {
-                configFileProvider([configFile(fileId: 'maven-github-settings', variable: 'MAVEN_SETTINGS')]) {
-                    sh """
-                        export GH_USER=${GITHUB_CREDS_USR}
-                        export GH_TOKEN=${GITHUB_CREDS_PSW}
+                configFileProvider([
+                    configFile(
+                        fileId: 'maven-github-settings',
+                        variable: 'MAVEN_SETTINGS'
+                    )
+                ]) {
+                    sh '''
+                        export GH_USER="$GITHUB_CREDS_USR"
+                        export GH_TOKEN="$GITHUB_CREDS_PSW"
 
-                        ${MAVEN_HOME}/bin/mvn -s $MAVEN_SETTINGS -B clean package
-                        ${MAVEN_HOME}/bin/mvn -s $MAVEN_SETTINGS -B deploy
-                    """
+                        mvn -s "$MAVEN_SETTINGS" -B clean package
+                        mvn -s "$MAVEN_SETTINGS" -B deploy
+                    '''
                 }
             }
         }
