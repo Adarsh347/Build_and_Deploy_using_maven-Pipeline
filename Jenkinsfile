@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GITHUB_CREDS = github-packages-cred-jenkins-pipeline
+        GITHUB_CREDS = credentials('github-packages-cred-jenkins-pipeline')
         JAVA_HOME    = tool name: 'jdk11'
         MAVEN_HOME   = tool name: 'maven3'
         PATH         = "${JAVA_HOME}/bin:${PATH}"
